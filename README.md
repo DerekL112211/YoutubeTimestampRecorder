@@ -1,7 +1,7 @@
 # YouTube Timestamp Recorder
 
 ## Overview
-YouTube Timestamp Recorder is a Java desktop application that helps you create and manage timestamps with notes for YouTube videos or any other media content. The application provides an intuitive GUI for recording important moments with descriptions, making it easy to organize and export your timestamps.
+YouTube Timestamp Recorder is a Java desktop application that helps you create and manage timestamps with notes for YouTube videos or any other media content. The application provides an intuitive GUI for recording important moments with descriptions, featuring hierarchical timestamps, dynamic note management, and automatic file opening capabilities.
 
 ## Features
 - ✅ **Add Timestamps**: Record timestamps in MM:SS or HH:MM:SS format
@@ -10,100 +10,140 @@ YouTube Timestamp Recorder is a Java desktop application that helps you create a
 - ✅ **Duplicate Prevention**: Prevents adding duplicate timestamps
 - ✅ **Edit & Delete**: Modify or remove existing timestamp entries
 - ✅ **File Operations**: Save and load timestamp collections to/from files
-- ✅ **Export Options**: Export timestamps in various formats
+- ✅ **Export Options**: Export timestamps to text format
 - ✅ **User-Friendly GUI**: Clean and intuitive Swing-based interface
 
 ## Project Structure
 ```
-youtube-timestamp-recorder/
+YoutubeTimestampRecorder/
+├── src/
+│   └── main/
+│       └── java/
+│           └── com/
+│               └── example/
+│                   ├── App.java                    # Main application entry point
+│                   ├── TimestampRecorderGUI.java   # Main GUI with dynamic features
+│                   ├── TimestampService.java       # Core timestamp logic
+│                   ├── TimestampEntry.java         # Data model for timestamps
+│                   ├── TimestampType.java          # Enum for main/sub classification
+│                   └── FileService.java            # File operations and auto-open
 ├── target/
-│   └── classes/
+│   └── classes/                                    # Compiled bytecode
 │       ├── timestamp-recorder.jar
 │       ├── timestamp-recorder-v2.jar
-│       └── MANIFEST.MF
+│       └── com/example/*.class
+├── pom.xml                                         # Maven build configuration
 ├── README.md
-└── pom.xml
+└── .gitignore                                      # Git ignore rules
 ```
 
 ## How to Use
 
 ### Running the Application
-1. **Download the JAR file**: Get `timestamp-recorder-v2.jar` from the `target/classes/` directory
-2. **Run the application**: 
+1. **Prerequisites**: Ensure Java 8+ is installed (`java -version`)
+2. **Compile** (if needed):
    ```bash
-   java -jar timestamp-recorder-v2.jar
+   javac -encoding UTF-8 -cp src\main\java src\main\java\com\example\*.java -d target\classes
    ```
-   Or simply double-click the JAR file if Java is properly configured on your system
+3. **Run the application**: 
+   ```bash
+   java -cp target\classes com.example.App
+   ```
 
 ### Using the Application
-1. **Adding Timestamps**:
-   - Enter a timestamp in MM:SS or HH:MM:SS format (e.g., `1:23` or `1:23:45`)
-   - Add an optional note describing what happens at that time
-   - Click "Add Timestamp" to save the entry
 
-2. **Managing Timestamps**:
-   - View all timestamps in the table below the input area
-   - Timestamps are automatically sorted chronologically
-   - Select a row and click "Remove Selected" to delete an entry
-   - Double-click a note cell to edit it
+#### Adding Timestamps
+1. **Enter Timestamp**: Use MM:SS format (e.g., `01:30`) in the timestamp field
+2. **Add Notes**: 
+   - Enter notes in the dynamic notes section
+   - Use **+** button to add multiple notes per timestamp
+   - Use **-** button to remove note fields
+3. **Choose Type**: 
+   - Click **"Add Timestamp"** for main entries
+   - Click **"Add Sub-timestamp"** for indented sub-entries (creates hierarchical structure)
 
-3. **File Operations**:
-   - **Save**: Use File → Save to save your timestamps to a file
-   - **Load**: Use File → Load to load previously saved timestamps
-   - **Export**: Use File → Export to export timestamps in different formats
-   - **Clear**: Use File → Clear All to remove all timestamps
+#### Time Adjustment Features
+- **Fine-tune timestamps** using the time adjustment buttons:
+  - **Subtract**: -30s, -15s, -10s, -5s (red buttons)
+  - **Add**: +5s, +10s, +15s, +30s (green buttons)
+- **Duplicate Detection**: Timestamp field highlights in red if timestamp already exists
 
-4. **Timestamp Format**:
-   - Accepts both `MM:SS` (e.g., `5:30`) and `HH:MM:SS` (e.g., `1:05:30`) formats
-   - Invalid formats will be rejected with an error message
+#### Managing Timestamps
+- **Automatic Sorting**: All timestamps display chronologically regardless of input order
+- **Edit Notes**: Click directly in the note column to edit
+- **Delete Entries**: Select row and click "Delete Selected"
+- **Clear All**: Remove all timestamps with confirmation dialog
 
+#### File Operations
+- **Save**: Use File → Save to save your collection in native format
+- **Load**: Use File → Load to load previously saved timestamps  
+- **Export to Text**: Exports with hierarchical formatting and **automatically opens** the file
+
+## Advanced Features
+
+### Hierarchical Timestamps
+Create organized, indented timestamp structures:
+```
+00:30  Introduction to the topic
+    01:15  Key concept explanation  
+    02:45  Important example
+05:00  Next major section
+    05:30  Sub-topic details
+    07:20  Related information
+```
+
+### Multiple Notes Per Timestamp
+- Add multiple related notes to a single timestamp
+- Notes are combined with " | " separator in exports
+- Dynamic +/- interface for adding/removing note fields
+
+### Smart Formatting
+- **Input**: Accepts various formats (`1:30`, `01:30`, `1:30:45`)
+- **Display**: Standardizes to MM:SS with leading zeros (`01:30`, `90:45`)
+- **Export**: Maintains consistent formatting across all outputs
 ## Installation Requirements
 - **Java Runtime Environment (JRE) 8 or higher** - Required to run the application
 - **Operating System**: Windows, macOS, or Linux with Java support
 
-## Development Requirements (Optional)
-If you want to build the project from source:
-- Java Development Kit (JDK) 8 or higher
-- Apache Maven 3.6 or higher
+## Development & Building
 
-## Building from Source (Optional)
-If you have the source code and want to build the project yourself:
-
-1. **Build the project**:
+### From Source Code
+1. **Clone the repository**:
    ```bash
-   mvn clean install
+   git clone https://github.com/DerekL112211/YoutubeTimestampRecorder.git
+   cd YoutubeTimestampRecorder
    ```
 
-2. **Run the application**:
+2. **Compile the project**:
    ```bash
-   mvn exec:java -Dexec.mainClass="com.example.App"
+   javac -encoding UTF-8 -cp src\main\java src\main\java\com\example\*.java -d target\classes
    ```
+
+3. **Run the application**:
+   ```bash
+   java -cp target\classes com.example.App
+   ```
+
+### Using Maven (Optional)
+If you prefer Maven for building:
+```bash
+mvn clean compile exec:java -Dexec.mainClass="com.example.App"
+```
 
 ## Troubleshooting
 
 ### Application Won't Start
-- Ensure Java is properly installed: `java -version`
-- Make sure you're using Java 8 or higher
-- Try running from command line: `java -jar timestamp-recorder-v2.jar`
+- **Check Java Version**: Run `java -version` (needs Java 8+)
+- **Compilation Issues**: Ensure UTF-8 encoding with `-encoding UTF-8` flag
+- **Missing Classes**: Verify all `.java` files are in `src/main/java/com/example/`
 
-### Invalid Timestamp Format
-- Use MM:SS format (e.g., `5:30` for 5 minutes 30 seconds)
-- Use HH:MM:SS format (e.g., `1:05:30` for 1 hour 5 minutes 30 seconds)
-- Ensure minutes and seconds are between 00-59
-
-### File Operations Issues
-- Ensure you have write permissions in the directory where you're saving files
-- Check that the file path is accessible and not locked by another application
-
-## Use Cases
-- **YouTube Video Analysis**: Record important moments while watching educational content
-- **Meeting Notes**: Track key discussion points with timestamps
-- **Podcast Timestamps**: Mark interesting segments for later reference
-- **Video Editing**: Plan cut points and highlight moments
-- **Research**: Document specific moments in video/audio content
+### Timestamp Format Issues
+- **Accepted Formats**: `1:30`, `01:30`, `1:30:45`, `01:30:45`
+- **Display Format**: Always shows as MM:SS with leading zeros
+- **Time Limits**: Minutes and seconds must be 00-59
 
 ## License
 This project is provided as-is for educational and personal use.
 
 ---
-**Note**: This application runs entirely offline and does not connect to the internet or YouTube directly. It's a standalone tool for managing timestamp collections.
+**Note**: This application runs entirely offline and does not connect to the internet or YouTube directly. It's a standalone tool for managing timestamp collections with advanced organizational features.
