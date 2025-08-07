@@ -5,10 +5,12 @@ my-java-project/src/
 # Ignore Java source files anywhere
 *.java
 
-# Keep target folder but ignore some build artifacts that might not be needed
+# Ignore compiled class files
+*.class
+
+# Keep JAR files but ignore some other build artifacts
 # Comment out the lines below if you want to include these files
 # target/classes/MANIFEST.MF
-# *.jar
 
 # Ignore IDE files
 .vscode/
