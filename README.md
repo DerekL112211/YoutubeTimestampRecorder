@@ -1,56 +1,109 @@
 # YouTube Timestamp Recorder
 
 ## Overview
-YouTube Timestamp Recorder is a Java desktop application designed to help users create, manage, and organize timestamps with notes for YouTube videos or any media content. This tool provides an intuitive graphical interface for recording important moments with descriptions.
-
-## Quick Start
-1. **Download**: Get the latest `timestamp-recorder-v2.jar` from the `youtube-timestamp-recorder/target/classes/` directory
-2. **Run**: Execute `java -jar timestamp-recorder-v2.jar` or double-click the JAR file
-3. **Use**: Start adding timestamps and notes for your videos!
-
-## Repository Structure
-```
-YoutubeTimestampRecorder/
-├── youtube-timestamp-recorder/          # Main project directory
-│   ├── target/classes/                 # Compiled application
-│   │   ├── timestamp-recorder-v2.jar   # Latest version (ready to use)
-│   │   ├── timestamp-recorder.jar      # Previous version
-│   │   └── MANIFEST.MF                 # Manifest file
-│   ├── README.md                       # Detailed usage guide
-│   └── pom.xml                         # Maven configuration
-├── .gitignore                          # Git ignore rules
-├── README.md                           # This file
-└── pom.xml                             # Root Maven configuration
-```
+YouTube Timestamp Recorder is a Java desktop application that helps you create and manage timestamps with notes for YouTube videos or any other media content. The application provides an intuitive GUI for recording important moments with descriptions, making it easy to organize and export your timestamps.
 
 ## Features
-- ✅ Add timestamps in MM:SS or HH:MM:SS format
-- ✅ Attach descriptive notes to timestamps
-- ✅ Save/load timestamp collections
-- ✅ Export as Text file
+- ✅ **Add Timestamps**: Record timestamps in MM:SS or HH:MM:SS format
+- ✅ **Add Notes**: Attach descriptive notes to each timestamp
+- ✅ **Automatic Sorting**: Timestamps are automatically sorted chronologically
+- ✅ **Duplicate Prevention**: Prevents adding duplicate timestamps
+- ✅ **Edit & Delete**: Modify or remove existing timestamp entries
+- ✅ **File Operations**: Save and load timestamp collections to/from files
+- ✅ **Export Options**: Export timestamps in various formats
+- ✅ **User-Friendly GUI**: Clean and intuitive Swing-based interface
 
-## System Requirements
-- **Java Runtime Environment (JRE) 8+**: Required to run the application
-- **Operating System**: Windows, macOS, or Linux with Java support
-
-## Getting Started
-For detailed installation and usage instructions, see the [project README](youtube-timestamp-recorder/README.md).
-
-## Download & Run
-```bash
-# Navigate to the application directory
-cd youtube-timestamp-recorder/target/classes/
-
-# Run the application
-java -jar timestamp-recorder-v2.jar
+## Project Structure
+```
+youtube-timestamp-recorder/
+├── target/
+│   └── classes/
+│       ├── timestamp-recorder.jar
+│       ├── timestamp-recorder-v2.jar
+│       └── MANIFEST.MF
+├── README.md
+└── pom.xml
 ```
 
-## Use Cases
-- **Content Creation**: Mark key moments while reviewing videos
-- **Video Editing**: Plan cut points and highlight segments
+## How to Use
 
-## Support
-This is a standalone desktop application that works entirely offline. No internet connection required for operation.
+### Running the Application
+1. **Download the JAR file**: Get `timestamp-recorder-v2.jar` from the `target/classes/` directory
+2. **Run the application**: 
+   ```bash
+   java -jar timestamp-recorder-v2.jar
+   ```
+   Or simply double-click the JAR file if Java is properly configured on your system
+
+### Using the Application
+1. **Adding Timestamps**:
+   - Enter a timestamp in MM:SS or HH:MM:SS format (e.g., `1:23` or `1:23:45`)
+   - Add an optional note describing what happens at that time
+   - Click "Add Timestamp" to save the entry
+
+2. **Managing Timestamps**:
+   - View all timestamps in the table below the input area
+   - Timestamps are automatically sorted chronologically
+   - Select a row and click "Remove Selected" to delete an entry
+   - Double-click a note cell to edit it
+
+3. **File Operations**:
+   - **Save**: Use File → Save to save your timestamps to a file
+   - **Load**: Use File → Load to load previously saved timestamps
+   - **Export**: Use File → Export to export timestamps in different formats
+   - **Clear**: Use File → Clear All to remove all timestamps
+
+4. **Timestamp Format**:
+   - Accepts both `MM:SS` (e.g., `5:30`) and `HH:MM:SS` (e.g., `1:05:30`) formats
+   - Invalid formats will be rejected with an error message
+
+## Installation Requirements
+- **Java Runtime Environment (JRE) 8 or higher** - Required to run the application
+- **Operating System**: Windows, macOS, or Linux with Java support
+
+## Development Requirements (Optional)
+If you want to build the project from source:
+- Java Development Kit (JDK) 8 or higher
+- Apache Maven 3.6 or higher
+
+## Building from Source (Optional)
+If you have the source code and want to build the project yourself:
+
+1. **Build the project**:
+   ```bash
+   mvn clean install
+   ```
+
+2. **Run the application**:
+   ```bash
+   mvn exec:java -Dexec.mainClass="com.example.App"
+   ```
+
+## Troubleshooting
+
+### Application Won't Start
+- Ensure Java is properly installed: `java -version`
+- Make sure you're using Java 8 or higher
+- Try running from command line: `java -jar timestamp-recorder-v2.jar`
+
+### Invalid Timestamp Format
+- Use MM:SS format (e.g., `5:30` for 5 minutes 30 seconds)
+- Use HH:MM:SS format (e.g., `1:05:30` for 1 hour 5 minutes 30 seconds)
+- Ensure minutes and seconds are between 00-59
+
+### File Operations Issues
+- Ensure you have write permissions in the directory where you're saving files
+- Check that the file path is accessible and not locked by another application
+
+## Use Cases
+- **YouTube Video Analysis**: Record important moments while watching educational content
+- **Meeting Notes**: Track key discussion points with timestamps
+- **Podcast Timestamps**: Mark interesting segments for later reference
+- **Video Editing**: Plan cut points and highlight moments
+- **Research**: Document specific moments in video/audio content
+
+## License
+This project is provided as-is for educational and personal use.
 
 ---
-**Ready to use**: Download `timestamp-recorder-v2.jar` and start organizing your video timestamps today!
+**Note**: This application runs entirely offline and does not connect to the internet or YouTube directly. It's a standalone tool for managing timestamp collections.

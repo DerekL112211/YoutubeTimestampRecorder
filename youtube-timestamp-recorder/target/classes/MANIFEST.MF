@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: com.example.App
-Created-By: Timestamp Recorder v2.1
