@@ -1,16 +1,10 @@
-# Ignore source code files
-src/
-my-java-project/src/
+# Ignore compiled class files in source directories (they should only be in target/)
+src/**/*.class
 
-# Ignore Java source files anywhere
-*.java
-
-# Ignore compiled class files
-*.class
-
-# Keep JAR files but ignore some other build artifacts
-# Comment out the lines below if you want to include these files
-# target/classes/MANIFEST.MF
+# Ignore build output directory contents but keep structure
+target/classes/**
+!target/classes/MANIFEST.MF
+!target/classes/*.jar
 
 # Ignore IDE files
 .vscode/
@@ -29,3 +23,9 @@ Thumbs.db
 # Ignore temporary files
 *.tmp
 *.temp
+
+# Ignore Maven/Gradle build files (optional)
+.mvn/
+build/
+gradle/
+gradlew*
