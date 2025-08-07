@@ -26,11 +26,8 @@ YoutubeTimestampRecorder/
 ## Features
 - ✅ Add timestamps in MM:SS or HH:MM:SS format
 - ✅ Attach descriptive notes to timestamps
-- ✅ Automatic chronological sorting
 - ✅ Save/load timestamp collections
-- ✅ Export functionality
-- ✅ User-friendly GUI interface
-- ✅ Duplicate timestamp prevention
+- ✅ Export as Text file
 
 ## System Requirements
 - **Java Runtime Environment (JRE) 8+**: Required to run the application
@@ -50,9 +47,6 @@ java -jar timestamp-recorder-v2.jar
 
 ## Use Cases
 - **Content Creation**: Mark key moments while reviewing videos
-- **Education**: Note important timestamps in educational content
-- **Research**: Document specific moments in video/audio materials
-- **Meeting Notes**: Track discussion points with precise timing
 - **Video Editing**: Plan cut points and highlight segments
 
 ## Support
