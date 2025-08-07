@@ -1,0 +1,29 @@
+# Ignore source code files
+src/
+my-java-project/src/
+
+# Ignore Java source files anywhere
+*.java
+
+# Keep target folder but ignore some build artifacts that might not be needed
+# Comment out the lines below if you want to include these files
+# target/classes/MANIFEST.MF
+# *.jar
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.iml
+.eclipse/
+.settings/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
