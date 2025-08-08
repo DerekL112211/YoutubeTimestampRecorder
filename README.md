@@ -50,10 +50,10 @@ YoutubeTimestampRecorder/
 ### Running the Application
 
 #### Option 1: Quick Start (Recommended)
-1. **Download**: Get the latest `timestamp-recorder-v3.jar` from the releases
+1. **Download**: Get the latest `timestamp-recorder.jar` from the releases
 2. **Run**: Double-click the JAR file or use command line:
    ```bash
-   java -jar timestamp-recorder-v3.jar
+   java -jar timestamp-recorder.jar
    ```
 
 #### Option 2: Build from Source
@@ -70,7 +70,7 @@ YoutubeTimestampRecorder/
    ```bash
    java -cp target\classes com.example.App
    # Or run the generated JAR:
-   java -jar target\timestamp-recorder-v3.jar
+   java -jar target\timestamp-recorder.jar
    ```
 
 ### Using the Application
