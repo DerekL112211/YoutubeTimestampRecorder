@@ -72,9 +72,14 @@ public class FileService {
                 if (note == null) {
                     note = "";
                 }
-                // Use consistent spacing - pad timestamp to 8 characters for better alignment
+                
+                // Get timestamp and apply proper indentation based on type
                 String timestamp = entry.getTimestamp();
-                writer.printf("%-8s %s%n", timestamp, note.trim());
+                String indentation = entry.getType().getExportPrefix();
+                
+                // Format: [indentation]timestamp[full-width space]note
+                // Using Unicode escape for full-width space to match expected output
+                writer.printf("%s%s\u3000%s%n", indentation, timestamp, note.trim());
             }
             
             return true;
@@ -82,36 +87,5 @@ public class FileService {
             System.err.println("Error exporting timestamps: " + e.getMessage());
             return false;
         }
-    }
-    
-    /**
-     * Export timestamps to CSV format
-     */
-    public boolean exportToCSV(List<TimestampEntry> timestamps, File file) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
-            // Write CSV header
-            writer.println("Timestamp,Note,Date Added");
-            
-            // Write timestamps
-            for (TimestampEntry entry : timestamps) {
-                writer.printf("\"%s\",\"%s\",\"%s\"%n",
-                    escapeCSV(entry.getTimestamp()),
-                    escapeCSV(entry.getNote()),
-                    escapeCSV(entry.getDateAdded()));
-            }
-            
-            return true;
-        } catch (IOException e) {
-            System.err.println("Error exporting to CSV: " + e.getMessage());
-            return false;
-        }
-    }
-    
-    /**
-     * Escape special characters for CSV format
-     */
-    private String escapeCSV(String value) {
-        if (value == null) return "";
-        return value.replace("\"", "\"\"");
     }
 }
