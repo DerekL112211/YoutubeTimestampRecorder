@@ -152,6 +152,10 @@ public class SwingTimestampView implements TimestampView {
         };
         
         timestampTable = new JTable(tableModel);
+        
+        // Apply custom styling to the table
+        UIComponents.styleTable(timestampTable);
+        
         timestampTable.getColumnModel().getColumn(0).setPreferredWidth(100);
         timestampTable.getColumnModel().getColumn(1).setPreferredWidth(400);
         timestampTable.getColumnModel().getColumn(2).setPreferredWidth(150);

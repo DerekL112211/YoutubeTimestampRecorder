@@ -23,9 +23,9 @@ public class UIComponents {
     private static Font customFont = null;
     
     // Standard fonts
-    public static final Font BUTTON_FONT = getCustomFont(Font.BOLD, 16);
-    public static final Font SMALL_BUTTON_FONT = getCustomFont(Font.BOLD, 14);
-    public static final Font LABEL_FONT = getCustomFont(Font.PLAIN, 18);
+    public static final Font BUTTON_FONT = getCustomFont(Font.PLAIN, 14);
+    public static final Font SMALL_BUTTON_FONT = getCustomFont(Font.PLAIN, 14);
+    public static final Font LABEL_FONT = getCustomFont(Font.PLAIN, 16);
     public static final Font INPUT_FIELD_FONT = getCustomFont(Font.PLAIN, 16);
     
     // Standard insets
@@ -35,7 +35,7 @@ public class UIComponents {
     /**
      * Loads and returns custom font, falls back to system font if loading fails
      */
-    private static Font getCustomFont(int style, float size) {
+    public static Font getCustomFont(int style, float size) {
         if (customFont == null) {
             try {
                 // Load your custom font file from resources
@@ -126,12 +126,55 @@ public class UIComponents {
     }
     
     /**
-     * Creates a titled panel with border
+     * Creates a titled panel with border and custom font
      */
     public static JPanel createTitledPanel(String title, LayoutManager layout) {
         JPanel panel = new JPanel(layout);
-        panel.setBorder(BorderFactory.createTitledBorder(title));
+        
+        // Create a titled border with custom font
+        javax.swing.border.TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
+        titledBorder.setTitleFont(getCustomFont(Font.BOLD, 14)); // Bold 14pt for titles
+        titledBorder.setTitleColor(new Color(60, 60, 60)); // Dark gray color
+        
+        panel.setBorder(titledBorder);
         return panel;
+    }
+    
+    /**
+     * Creates a custom titled border with specified font size and style
+     */
+    public static javax.swing.border.TitledBorder createCustomTitledBorder(String title, int fontStyle, float fontSize) {
+        javax.swing.border.TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
+        titledBorder.setTitleFont(getCustomFont(fontStyle, fontSize));
+        titledBorder.setTitleColor(new Color(60, 60, 60)); // Dark gray color
+        return titledBorder;
+    }
+    
+    /**
+     * Creates a custom titled border with specified font size, style, and color
+     */
+    public static javax.swing.border.TitledBorder createCustomTitledBorder(String title, int fontStyle, float fontSize, Color titleColor) {
+        javax.swing.border.TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
+        titledBorder.setTitleFont(getCustomFont(fontStyle, fontSize));
+        titledBorder.setTitleColor(titleColor);
+        return titledBorder;
+    }
+    
+    /**
+     * Applies custom styling to a JTable
+     */
+    public static void styleTable(JTable table) {
+        // Set custom fonts
+        table.setFont(INPUT_FIELD_FONT); // 16pt font for table cells
+        table.getTableHeader().setFont(getCustomFont(Font.BOLD, 14)); // Bold headers
+        
+        // Set row height to accommodate larger font
+        table.setRowHeight(26);
+        
+        // Optional: Set colors for better readability
+        table.setGridColor(new Color(230, 230, 230)); // Light gray grid
+        table.getTableHeader().setBackground(new Color(245, 245, 245)); // Light header background
+        table.setSelectionBackground(new Color(184, 207, 229)); // Light blue selection
     }
     
     /**
