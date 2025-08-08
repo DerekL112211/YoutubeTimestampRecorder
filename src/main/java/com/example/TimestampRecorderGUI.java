@@ -63,45 +63,53 @@ public class TimestampRecorderGUI {
         panel.setBorder(BorderFactory.createTitledBorder("Add Timestamp"));
         GridBagConstraints gbc = new GridBagConstraints();
         
-        // Timestamp input
+        // Timestamp input label
         gbc.gridx = 0; gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(5, 5, 5, 5);
         panel.add(new JLabel("Timestamp (mm:ss):"), gbc);
         
-        gbc.gridx = 1; gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 0.3;
-        timestampField = new JTextField(15);
+        // Timestip input box
+        gbc.gridx = 1; gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        timestampField = new JTextField();
         timestampField.setText("00:00");
         timestampField.setToolTipText("Format: mm:ss or hh:mm:ss (e.g., 01:30 or 1:30:45)");
         panel.add(timestampField, gbc);
         
         // Notes section
-        gbc.gridx = 2; gbc.fill = GridBagConstraints.NONE;
-        gbc.weightx = 0;
-        gbc.insets = new Insets(5, 15, 5, 5);
+        gbc.gridx = 0; gbc.gridy = 1;
+        gbc.gridwidth = 2;
         panel.add(new JLabel("Notes:"), gbc);
         
-        gbc.gridx = 3; gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 0.6;
+        // Create dynamic notes panel (no scroll view)
         notesPanel = createNotesPanel();
+        notesPanel.setBorder(BorderFactory.createLoweredBevelBorder());
+        
+        gbc.gridx = 1; gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.BOTH; // This is crucial for expansion
+        gbc.weightx = 1.0; // Allow horizontal expansion
+        gbc.weighty = 1.0; // Allow vertical expansion
         panel.add(notesPanel, gbc);
         
-        // Time modification buttons - on second row
-        gbc.gridx = 0; gbc.gridy = 1;
-        gbc.gridwidth = 4; // Span to make room for buttons
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1.0;
+        // Time modification buttons
+        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridwidth = 2; // Reduce span to avoid conflict with button area
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 0.8;
+        gbc.weighty = 0;
         gbc.insets = new Insets(10, 5, 5, 5);
         JPanel timeModPanel = createTimeModificationPanel();
         panel.add(timeModPanel, gbc);
         
         // Add buttons panel in right bottom corner
-        gbc.gridx = 4; gbc.gridy = 1;
-        gbc.gridwidth = 2; // Span across both button columns
+        gbc.gridx = 2; gbc.gridy = 2; // Move to same row as time mod panel
+        gbc.gridwidth = 1; // Single column (same as notes column)
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.SOUTHEAST; // Position at bottom right
-        gbc.weightx = 0;
+        gbc.weightx = 0.2;
+        gbc.weighty = 0;
         gbc.insets = new Insets(10, 10, 5, 5);
         
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
@@ -121,7 +129,6 @@ public class TimestampRecorderGUI {
     private JPanel createNotesPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        
         // Set notesPanel reference first
         notesPanel = panel;
         
@@ -132,46 +139,12 @@ public class TimestampRecorderGUI {
     }
     
     private void addNoteField() {
-        JPanel noteRowPanel = new JPanel(new BorderLayout(5, 0));
-        
         JTextField noteField = new JTextField(25);
         noteField.setToolTipText("Optional description for this timestamp");
         noteFields.add(noteField);
         
-        noteRowPanel.add(noteField, BorderLayout.CENTER);
-        
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
-        
-        // Always show + button on new field (it will be the last one)
-        JButton addButton = new JButton("+");
-        addButton.setPreferredSize(new Dimension(45, 30));
-        addButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-        addButton.setMargin(new Insets(2, 2, 2, 2));
-        addButton.setToolTipText("Add another note");
-        addButton.addActionListener(e -> {
-            addNoteField();
-            refreshNotesPanel();
-        });
-        buttonPanel.add(addButton);
-        
-        // Show - button only if there's more than one note field
-        if (noteFields.size() > 1) {
-            JButton removeButton = new JButton("-");
-            removeButton.setPreferredSize(new Dimension(45, 30));
-            removeButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-            removeButton.setMargin(new Insets(2, 2, 2, 2));
-            removeButton.setToolTipText("Remove this note");
-            removeButton.addActionListener(e -> {
-                removeNoteField(noteField);
-                refreshNotesPanel();
-            });
-            buttonPanel.add(removeButton);
-        }
-        
-        noteRowPanel.add(buttonPanel, BorderLayout.EAST);
-        
-        notesPanel.add(noteRowPanel);
-        notesPanel.add(Box.createVerticalStrut(3)); // Small spacing between rows
+        // Refresh the entire panel to maintain proper order
+        refreshNotesPanel();
     }
     
     private void removeNoteField(JTextField fieldToRemove) {
@@ -181,7 +154,8 @@ public class TimestampRecorderGUI {
     private void refreshNotesPanel() {
         notesPanel.removeAll();
         
-        // Rebuild the notes panel with current fields
+        // Rebuild the notes panel with current fields in the correct order
+        // First note field is always at index 0, new notes are added after it
         for (int i = 0; i < noteFields.size(); i++) {
             JTextField noteField = noteFields.get(i);
             JPanel noteRowPanel = new JPanel(new BorderLayout(5, 0));
@@ -190,7 +164,7 @@ public class TimestampRecorderGUI {
             
             JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
             
-            // Show + button only on the LAST note field
+            // Show + button only on the LAST note field (newest added note)
             if (i == noteFields.size() - 1) {
                 JButton addButton = new JButton("+");
                 addButton.setPreferredSize(new Dimension(45, 30));
@@ -199,13 +173,12 @@ public class TimestampRecorderGUI {
                 addButton.setToolTipText("Add another note");
                 addButton.addActionListener(e -> {
                     addNoteField();
-                    refreshNotesPanel();
                 });
                 buttonPanel.add(addButton);
             }
             
-            // Show - button only if there's more than one note field
-            if (noteFields.size() > 1) {
+            // Show - button only if there's more than one note field AND it's not the first field
+            if (noteFields.size() > 1 && i > 0) {
                 JButton removeButton = new JButton("-");
                 removeButton.setPreferredSize(new Dimension(45, 30));
                 removeButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
@@ -229,16 +202,37 @@ public class TimestampRecorderGUI {
         
         notesPanel.revalidate();
         notesPanel.repaint();
+        
+        // Force parent containers to recalculate layout for dynamic height expansion
+        Container parent = notesPanel.getParent();
+        while (parent != null) {
+            parent.revalidate();
+            parent.repaint();
+            if (parent instanceof JFrame) break;
+            parent = parent.getParent();
+        }
+        
+        // Resize the window to accommodate the new content
+        SwingUtilities.invokeLater(() -> {
+            frame.pack();
+            // Ensure the window doesn't become smaller than minimum size
+            Dimension currentSize = frame.getSize();
+            Dimension minSize = frame.getMinimumSize();
+            if (currentSize.width < minSize.width || currentSize.height < minSize.height) {
+                frame.setSize(Math.max(currentSize.width, minSize.width), 
+                             Math.max(currentSize.height, minSize.height));
+            }
+        });
     }
     
     private JPanel createTimeModificationPanel() {
         JPanel timeModPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        
+
         // Label
+        gbc.insets = new Insets(5, 5, 5, 5);
         gbc.gridx = 0; gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.CENTER;
         timeModPanel.add(new JLabel("Time Adjust:"), gbc);
         
         // Subtract time buttons (first row)
@@ -246,7 +240,7 @@ public class TimestampRecorderGUI {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         int[] subtractTimes = {-30, -15, -10, -5};
-        JPanel subtractPanel = createTimeButtonPanel("Subtract: ", subtractTimes, new Color(255, 200, 200));
+        JPanel subtractPanel = createTimeButtonPanel(subtractTimes, new Color(255, 200, 200));
         timeModPanel.add(subtractPanel, gbc);
         
         // Add time buttons (second row)
@@ -254,7 +248,7 @@ public class TimestampRecorderGUI {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         int[] addTimes = {5, 10, 15, 30};
-        JPanel addPanel = createTimeButtonPanel("Add:         ", addTimes, new Color(200, 255, 200));
+        JPanel addPanel = createTimeButtonPanel(addTimes, new Color(200, 255, 200));
         timeModPanel.add(addPanel, gbc);
         
         return timeModPanel;
@@ -263,10 +257,9 @@ public class TimestampRecorderGUI {
     /**
      * Helper method to create a panel with time adjustment buttons
      */
-    private JPanel createTimeButtonPanel(String labelText, int[] times, Color backgroundColor) {
+    private JPanel createTimeButtonPanel(int[] times, Color backgroundColor) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        panel.add(new JLabel(labelText));
-        
+
         for (int seconds : times) {
             JButton btn = new JButton((seconds > 0 ? "+" : "") + seconds + "s");
             btn.addActionListener(e -> modifyTimestamp(seconds));
