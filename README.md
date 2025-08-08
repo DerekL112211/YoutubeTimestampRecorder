@@ -21,33 +21,56 @@ YoutubeTimestampRecorder/
 │       └── java/
 │           └── com/
 │               └── example/
-│                   ├── App.java                    # Main application entry point
-│                   ├── TimestampRecorderGUI.java   # Main GUI with dynamic features
-│                   ├── TimestampService.java       # Core timestamp logic
-│                   ├── TimestampEntry.java         # Data model for timestamps
-│                   ├── TimestampType.java          # Enum for main/sub classification
-│                   └── FileService.java            # File operations and auto-open
+│                   ├── App.java                      # Main application entry point
+│                   ├── TimestampRecorderGUI.java     # Main GUI with modern styling
+│                   ├── TimestampService.java         # Core timestamp business logic
+│                   ├── TimestampEntry.java           # Data model for timestamps
+│                   ├── TimestampType.java            # Enum for main/sub classification
+│                   ├── FileService.java              # File operations and auto-open
+│                   ├── controller/
+│                   │   └── TimestampController.java  # MVC controller layer
+│                   ├── model/
+│                   │   └── TimestampModel.java       # MVC model layer
+│                   └── view/
+│                       ├── SwingTimestampView.java   # Modern UI view implementation
+│                       ├── TimestampView.java        # View interface
+│                       └── components/
+│                           ├── UIComponents.java     # Modern UI component factory
+│                           ├── DynamicNotesPanel.java       # Dynamic notes management
+│                           └── TimeModificationPanel.java   # Time adjustment controls
 ├── target/
-│   └── classes/                                    # Compiled bytecode
-│       ├── timestamp-recorder.jar
-│       ├── timestamp-recorder-v2.jar
-│       └── com/example/*.class
-├── pom.xml                                         # Maven build configuration
+│   └── classes/                                      # Compiled bytecode (build artifacts)
+├── pom.xml                                           # Maven build configuration
 ├── README.md
-└── .gitignore                                      # Git ignore rules
+└── .gitignore                                        # Git ignore rules
 ```
 
 ## How to Use
 
 ### Running the Application
-1. **Prerequisites**: Ensure Java 8+ is installed (`java -version`)
-2. **Compile** (if needed):
+
+#### Option 1: Quick Start (Recommended)
+1. **Download**: Get the latest `timestamp-recorder-v3.jar` from the releases
+2. **Run**: Double-click the JAR file or use command line:
    ```bash
-   javac -encoding UTF-8 -cp src\main\java src\main\java\com\example\*.java -d target\classes
+   java -jar timestamp-recorder-v3.jar
+   ```
+
+#### Option 2: Build from Source
+1. **Prerequisites**: Ensure Java 8+ is installed (`java -version`)
+2. **Build using provided script**:
+   ```bash
+   # Windows
+   build.bat
+   
+   # Or manually compile:
+   javac -d target\classes -cp target\classes src\main\java\com\example\*.java src\main\java\com\example\controller\*.java src\main\java\com\example\model\*.java src\main\java\com\example\view\*.java src\main\java\com\example\view\components\*.java
    ```
 3. **Run the application**: 
    ```bash
    java -cp target\classes com.example.App
+   # Or run the generated JAR:
+   java -jar target\timestamp-recorder-v3.jar
    ```
 
 ### Using the Application
@@ -101,6 +124,14 @@ Create organized, indented timestamp structures:
 - **Input**: Accepts various formats (`1:30`, `01:30`, `1:30:45`)
 - **Display**: Standardizes to MM:SS with leading zeros (`01:30`, `90:45`)
 - **Export**: Maintains consistent formatting across all outputs
+
+### Modern UI Design
+The application features a contemporary interface with:
+- **Professional Color Scheme**: Blue accent colors (#3B82F6) for buttons and borders
+- **Enhanced Typography**: Improved font rendering and customizable text sizes
+- **Styled Tables**: Professional table appearance with alternating row colors and improved readability
+- **Visual Feedback**: Modern button styling with hover effects and visual state indicators
+- **Consistent Theming**: Unified design language across all UI components
 ## Installation Requirements
 - **Java Runtime Environment (JRE) 8 or higher** - Required to run the application
 - **Operating System**: Windows, macOS, or Linux with Java support
@@ -114,14 +145,18 @@ Create organized, indented timestamp structures:
    cd YoutubeTimestampRecorder
    ```
 
-2. **Compile the project**:
+2. **Build the project**:
    ```bash
-   javac -encoding UTF-8 -cp src\main\java src\main\java\com\example\*.java -d target\classes
+   # Use build script (recommended)
+   build.bat
+   
+   # Or compile manually
+   javac -d target\classes -cp target\classes src\main\java\com\example\*.java src\main\java\com\example\controller\*.java src\main\java\com\example\model\*.java src\main\java\com\example\view\*.java src\main\java\com\example\view\components\*.java
    ```
 
 3. **Run the application**:
    ```bash
-   java -cp target\classes com.example.App
+   java -jar target\timestamp-recorder.jar
    ```
 
 ### Using Maven (Optional)

@@ -3,8 +3,13 @@ src/**/*.class
 
 # Ignore build output directory contents but keep structure
 target/classes/**
+target/*.jar
 !target/classes/MANIFEST.MF
-!target/classes/*.jar
+
+# Ignore build scripts (these are local development tools)
+build.bat
+build-release.bat
+MANIFEST.MF
 
 # Ignore IDE files
 .vscode/
