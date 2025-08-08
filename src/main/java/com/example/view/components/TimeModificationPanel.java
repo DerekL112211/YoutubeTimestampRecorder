@@ -26,7 +26,7 @@ public class TimeModificationPanel extends JPanel {
         gbc.gridx = 0; 
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.CENTER;
-        add(new JLabel("Time Adjust:"), gbc);
+        add(UIComponents.createLabel("Time Adjust:"), gbc);
         
         // Subtract time buttons (first row)
         gbc.gridx = 1; 

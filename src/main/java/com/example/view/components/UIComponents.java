@@ -19,13 +19,48 @@ public class UIComponents {
     public static final Color LIGHT_RED = new Color(255, 200, 200);
     public static final Color LIGHT_GREEN = new Color(200, 255, 200);
     
+    // Custom font loading
+    private static Font customFont = null;
+    
     // Standard fonts
-    public static final Font BUTTON_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 16);
-    public static final Font SMALL_BUTTON_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 14);
+    public static final Font BUTTON_FONT = getCustomFont(Font.BOLD, 16);
+    public static final Font SMALL_BUTTON_FONT = getCustomFont(Font.BOLD, 14);
+    public static final Font LABEL_FONT = getCustomFont(Font.PLAIN, 18);
+    public static final Font INPUT_FIELD_FONT = getCustomFont(Font.PLAIN, 16);
     
     // Standard insets
     public static final Insets SMALL_INSETS = new Insets(2, 2, 2, 2);
     public static final Insets MEDIUM_INSETS = new Insets(5, 5, 5, 5);
+    
+    /**
+     * Loads and returns custom font, falls back to system font if loading fails
+     */
+    private static Font getCustomFont(int style, float size) {
+        if (customFont == null) {
+            try {
+                // Load your custom font file from resources
+                java.io.InputStream fontStream = UIComponents.class.getResourceAsStream("/fonts/MyFont.ttf");
+                if (fontStream != null) {
+                    customFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+                    // Register the font with the GraphicsEnvironment (optional but recommended)
+                    GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(customFont);
+                    fontStream.close();
+                    System.out.println("Custom font loaded successfully: " + customFont.getName());
+                } else {
+                    System.err.println("Custom font file not found, using system default");
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to load custom font, using system default: " + e.getMessage());
+            }
+        }
+        
+        // If custom font loaded successfully, use it; otherwise fall back to system font
+        if (customFont != null) {
+            return customFont.deriveFont(style, size);
+        } else {
+            return new Font(Font.SANS_SERIF, style, (int) size);
+        }
+    }
     
     /**
      * Creates a standardized button with common properties
@@ -104,6 +139,7 @@ public class UIComponents {
      */
     public static JTextField createTextField(int columns, String tooltip, String defaultText) {
         JTextField field = new JTextField(columns);
+        field.setFont(INPUT_FIELD_FONT);
         if (tooltip != null) {
             field.setToolTipText(tooltip);
         }
@@ -111,6 +147,15 @@ public class UIComponents {
             field.setText(defaultText);
         }
         return field;
+    }
+    
+    /**
+     * Creates a standard label with custom font
+     */
+    public static JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(LABEL_FONT);
+        return label;
     }
     
     /**

@@ -85,7 +85,7 @@ public class SwingTimestampView implements TimestampView {
         // Timestamp input label
         gbc = UIComponents.createGridBagConstraints(0, 0, 1, GridBagConstraints.NONE, 0, 0, 
                                                    GridBagConstraints.CENTER, UIComponents.MEDIUM_INSETS);
-        panel.add(new JLabel("Timestamp (mm:ss):"), gbc);
+        panel.add(UIComponents.createLabel("Timestamp (mm:ss):"), gbc);
         
         // Timestamp input box
         gbc = UIComponents.createGridBagConstraints(1, 0, 2, GridBagConstraints.HORIZONTAL, 1.0, 0, 
@@ -96,7 +96,7 @@ public class SwingTimestampView implements TimestampView {
         // Notes section
         gbc = UIComponents.createGridBagConstraints(0, 1, 2, GridBagConstraints.NONE, 0, 0, 
                                                    GridBagConstraints.WEST, UIComponents.MEDIUM_INSETS);
-        panel.add(new JLabel("Notes:"), gbc);
+        panel.add(UIComponents.createLabel("Notes:"), gbc);
         
         // Create dynamic notes panel with window resize callback
         notesPanel = new DynamicNotesPanel(this::resizeWindow);
