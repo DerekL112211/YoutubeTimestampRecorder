@@ -20,6 +20,13 @@ Thumbs.db
 # Ignore log files
 *.log
 
+# Test files
+test_timestamps.txt
+*.tmp
+
+# Keep the fonts directory structure
+!src/main/resources/fonts/.gitkeep
+
 # Ignore temporary files
 *.tmp
 *.temp
