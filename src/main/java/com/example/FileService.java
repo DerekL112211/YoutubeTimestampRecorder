@@ -1,28 +1,26 @@
 package com.example;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Service class for handling file operations (save/load/export)
+ * Service class for file operations (loading and saving timestamps)
  */
 public class FileService {
     
     /**
-     * Save timestamps to file
+     * Saves timestamps to a text file
      */
     public boolean saveTimestamps(List<TimestampEntry> timestamps, File file) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
-            // Write header
-            writer.println("# Timestamp Recorder Data");
-            writer.println("# Format: timestamp|note|dateAdded");
-            writer.println("# Generated on: " + java.time.LocalDateTime.now());
-            writer.println();
-            
-            // Write timestamps
+        try (BufferedWriter writer = Files.newBufferedWriter(file.toPath())) {
             for (TimestampEntry entry : timestamps) {
-                writer.println(entry.toString());
+                writer.write(entry.toExportString());
+                writer.newLine();
             }
             return true;
         } catch (IOException e) {
@@ -32,20 +30,15 @@ public class FileService {
     }
     
     /**
-     * Load timestamps from file
+     * Loads timestamps from a text file
      */
     public List<TimestampEntry> loadTimestamps(File file) {
         List<TimestampEntry> timestamps = new ArrayList<>();
         
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
             String line;
             while ((line = reader.readLine()) != null) {
-                // Skip comments and empty lines
-                if (line.trim().isEmpty() || line.startsWith("#")) {
-                    continue;
-                }
-                
-                TimestampEntry entry = TimestampEntry.fromString(line);
+                TimestampEntry entry = parseTimestampLine(line);
                 if (entry != null) {
                     timestamps.add(entry);
                 }
@@ -58,28 +51,51 @@ public class FileService {
     }
     
     /**
-     * Export timestamps to formatted text file
+     * Parses a line from the file to create a TimestampEntry
      */
-    public boolean exportToText(List<TimestampEntry> timestamps, File file) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
-            if (timestamps.isEmpty()) {
-                writer.println("No timestamps recorded.");
-                return true;
-            }
+    private TimestampEntry parseTimestampLine(String line) {
+        if (line == null || line.trim().isEmpty()) {
+            return null;
+        }
+        
+        String trimmedLine = line.trim();
+        TimestampType type = TimestampType.MAIN;
+        
+        // Check if it's a sub-timestamp (starts with full-width spaces)
+        if (trimmedLine.startsWith("\u3000\u3000")) {
+            type = TimestampType.SUB;
+            trimmedLine = trimmedLine.substring(2).trim(); // Remove indentation
+        }
+        
+        // Split timestamp and notes
+        String[] parts = trimmedLine.split(" ", 2);
+        if (parts.length >= 1) {
+            String timestamp = parts[0];
+            String notes = parts.length > 1 ? parts[1] : "";
             
+            return new TimestampEntry(timestamp, notes, type);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Exports timestamps to a formatted text file
+     */
+    public boolean exportTimestamps(List<TimestampEntry> timestamps, File file) {
+        try (BufferedWriter writer = Files.newBufferedWriter(file.toPath())) {
+            // Write header
+            writer.write("Timestamp Export - Generated on " + 
+                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            writer.newLine();
+            writer.write("=" + "=".repeat(50));
+            writer.newLine();
+            writer.newLine();
+            
+            // Write timestamps
             for (TimestampEntry entry : timestamps) {
-                String note = entry.getNote();
-                if (note == null) {
-                    note = "";
-                }
-                
-                // Get timestamp and apply proper indentation based on type
-                String timestamp = entry.getTimestamp();
-                String indentation = entry.getType().getExportPrefix();
-                
-                // Format: [indentation]timestamp[full-width space]note
-                // Using Unicode escape for full-width space to match expected output
-                writer.printf("%s%s\u3000%s%n", indentation, timestamp, note.trim());
+                writer.write(entry.toExportString());
+                writer.newLine();
             }
             
             return true;
